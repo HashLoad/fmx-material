@@ -37,30 +37,13 @@ object Form3: TForm3
     Size.PlatformDefault = False
     Fill.Color = xFF634DE6
     object MaterialAvatar1: TMaterialAvatar
-      Elevation = 0
-      Align = MostLeft
-      Margins.Left = 5.000000000000000000
-      Margins.Top = 10.000000000000000000
-      Margins.Right = 10.000000000000000000
-      Margins.Bottom = 10.000000000000000000
-      Position.X = 5.000000000000000000
-      Position.Y = 10.000000000000000000
-      Size.Width = 113.000000000000000000
-      Size.Height = 141.000000000000000000
-      Size.PlatformDefault = False
-      Fill.Color = xFF8EADB4
-      Text = 'Rodrigo Bernardi'
-    end
-    object MaterialBadge1: TMaterialBadge
-      Elevation = 0
-      Align = Contents
-      Size.Width = 350.000000000000000000
+      Elevation = 15
+      Align = Left
+      Size.Width = 145.000000000000000000
       Size.Height = 161.000000000000000000
       Size.PlatformDefault = False
-      Fill.Color = claRed
-      Max = 0
-      ShowZero = False
-      Invisible = False
+      Fill.Color = xFFF5DCAD
+      Text = 'Rodrigo Bernardi'
     end
   end
   object MaterialPaper1: TMaterialPaper

@@ -17,9 +17,8 @@ type
     Circle1: TCircle;
     FloatAnimation1: TFloatAnimation;
     Edit1: TEdit;
-    MaterialAvatar1: TMaterialAvatar;
-    MaterialBadge1: TMaterialBadge;
     CheckBox1: TCheckBox;
+    MaterialAvatar1: TMaterialAvatar;
     procedure FloatAnimation1Process(Sender: TObject);
     procedure NumberBox1ChangeTracking(Sender: TObject);
     procedure CheckBox1Change(Sender: TObject);
