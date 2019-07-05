@@ -4,6 +4,8 @@
 	"version": "1.0.0",
 	"homepage": "",
 	"mainsrc": "src/",
-	"projects": [],
+	"projects": [
+		"FMX.Material.dproj"
+	],
 	"dependencies": {}
 }
