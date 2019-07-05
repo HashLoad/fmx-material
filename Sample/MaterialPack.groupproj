@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{21907F61-1C0D-4EDD-A0C2-11336584AF6F}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="..\FMX.Material.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="MaterialDemo.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="FMX_Material">
+        <MSBuild Projects="..\FMX.Material.dproj"/>
+    </Target>
+    <Target Name="FMX_Material:Clean">
+        <MSBuild Projects="..\FMX.Material.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FMX_Material:Make">
+        <MSBuild Projects="..\FMX.Material.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="MaterialDemo">
+        <MSBuild Projects="MaterialDemo.dproj"/>
+    </Target>
+    <Target Name="MaterialDemo:Clean">
+        <MSBuild Projects="MaterialDemo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="MaterialDemo:Make">
+        <MSBuild Projects="MaterialDemo.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="FMX_Material;MaterialDemo"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="FMX_Material:Clean;MaterialDemo:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="FMX_Material:Make;MaterialDemo:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

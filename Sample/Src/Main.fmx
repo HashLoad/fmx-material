@@ -1,0 +1,103 @@
+object Form3: TForm3
+  Left = 0
+  Top = 0
+  Caption = 'Form3'
+  ClientHeight = 480
+  ClientWidth = 640
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object NumberBox1: TNumberBox
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 1
+    Cursor = crIBeam
+    Value = 2.000000000000000000
+    Position.X = -63.000000000000000000
+    Size.Width = 63.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    OnChangeTracking = NumberBox1ChangeTracking
+    object FloatAnimation1: TFloatAnimation
+      AutoReverse = True
+      Duration = 5.000000000000000000
+      Loop = True
+      OnProcess = FloatAnimation1Process
+      PropertyName = 'Value'
+      StartValue = 0.000000000000000000
+      StopValue = 15.000000000000000000
+    end
+  end
+  object MaterialCard1: TMaterialCard
+    Elevation = 22
+    Position.X = 88.000000000000000000
+    Position.Y = 40.000000000000000000
+    Size.Width = 350.000000000000000000
+    Size.Height = 161.000000000000000000
+    Size.PlatformDefault = False
+    Fill.Color = xFF634DE6
+    object MaterialAvatar1: TMaterialAvatar
+      Elevation = 0
+      Align = MostLeft
+      Margins.Left = 5.000000000000000000
+      Margins.Top = 10.000000000000000000
+      Margins.Right = 10.000000000000000000
+      Margins.Bottom = 10.000000000000000000
+      Position.X = 5.000000000000000000
+      Position.Y = 10.000000000000000000
+      Size.Width = 113.000000000000000000
+      Size.Height = 141.000000000000000000
+      Size.PlatformDefault = False
+      Fill.Color = xFF8EADB4
+      Text = 'Rodrigo Bernardi'
+    end
+    object MaterialBadge1: TMaterialBadge
+      Elevation = 0
+      Align = Contents
+      Size.Width = 350.000000000000000000
+      Size.Height = 161.000000000000000000
+      Size.PlatformDefault = False
+      Fill.Color = claRed
+      Max = 0
+      ShowZero = False
+      Invisible = False
+    end
+  end
+  object MaterialPaper1: TMaterialPaper
+    Elevation = 21
+    Position.X = 248.000000000000000000
+    Position.Y = 256.000000000000000000
+    Size.Width = 145.000000000000000000
+    Size.Height = 129.000000000000000000
+    Size.PlatformDefault = False
+    object Circle1: TCircle
+      Align = Contents
+      Margins.Left = 10.000000000000000000
+      Margins.Top = 10.000000000000000000
+      Margins.Right = 10.000000000000000000
+      Margins.Bottom = 10.000000000000000000
+      Size.Width = 125.000000000000000000
+      Size.Height = 109.000000000000000000
+      Size.PlatformDefault = False
+    end
+  end
+  object Edit1: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Align = Bottom
+    TabOrder = 2
+    Position.Y = 455.000000000000000000
+    Size.Width = 640.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object CheckBox1: TCheckBox
+    Align = Bottom
+    Position.Y = 436.000000000000000000
+    Size.Width = 640.000000000000000000
+    Size.Height = 19.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 3
+    Text = 'CheckBox1'
+    OnChange = CheckBox1Change
+  end
+end
