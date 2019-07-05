@@ -139,9 +139,9 @@ begin
   try
     Canvas.FillEllipse(LRect, AbsoluteOpacity, FFill);
     if Self.Width > Self.Height then
-      Canvas.Font.Size := Self.Height / 1.5
+      Canvas.Font.Size := Self.Height / 2
     else
-      Canvas.Font.Size := Self.Width / 1.5;
+      Canvas.Font.Size := Self.Width / 2;
     Canvas.Font.Style := [TFontStyle.fsBold];
     Canvas.Fill.Color := TAlphaColorRec.White;
 
