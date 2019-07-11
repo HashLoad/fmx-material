@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Material.Paper, FMX.Objects, FMX.Effects,
   FMX.Controls.Presentation, FMX.Edit, FMX.EditBox, FMX.NumberBox, FMX.Material.Card, Data.Bind.EngExt,
   Fmx.Bind.DBEngExt, System.Rtti, System.Bindings.Outputs, Fmx.Bind.Editors, Data.Bind.Components, FMX.Ani, FMX.StdCtrls,
-  FMX.Material.Avatar, FMX.Material.Badge;
+  FMX.Material.Avatar, FMX.Material.Badge, FMX.Material.Chip;
 
 type
   TForm3 = class(TForm)
@@ -19,9 +19,12 @@ type
     Edit1: TEdit;
     CheckBox1: TCheckBox;
     MaterialAvatar1: TMaterialAvatar;
+    Edit2: TEdit;
+    MaterialChip1: TMaterialChip;
     procedure FloatAnimation1Process(Sender: TObject);
     procedure NumberBox1ChangeTracking(Sender: TObject);
     procedure CheckBox1Change(Sender: TObject);
+    procedure Edit2Change(Sender: TObject);
   private
     { Private declarations }
   public
@@ -41,6 +44,11 @@ uses
 procedure TForm3.CheckBox1Change(Sender: TObject);
 begin
 FloatAnimation1.Enabled := CheckBox1.IsChecked;
+end;
+
+procedure TForm3.Edit2Change(Sender: TObject);
+begin
+  MaterialChip1.Text := Edit2.Text;
 end;
 
 procedure TForm3.FloatAnimation1Process(Sender: TObject);

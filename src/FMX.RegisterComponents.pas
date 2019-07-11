@@ -8,7 +8,7 @@ implementation
 
 uses
   System.Classes, FMX.Material.Paper, FMX.Material.ZIndex, FMX.Material.ZIndex.Editor, DesignIntf, FMX.Types,
-  FMX.Material.Card, FMX.Material.Avatar, FMX.Material.Badge;
+  FMX.Material.Card, FMX.Material.Avatar, FMX.Material.Badge, FMX.Material.Chip;
 
 procedure Register;
 begin
@@ -16,7 +16,8 @@ begin
     TMaterialPaper,
     TMaterialCard,
     TMaterialAvatar,
-    TMaterialBadge
+    TMaterialBadge,
+    TMaterialChip
   ]);
 
   RegisterPropertyEditor(TypeInfo(TElevation), System.Classes.TPersistent, '', TElevationProperty);

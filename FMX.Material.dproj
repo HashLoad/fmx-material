@@ -123,6 +123,7 @@
         <DCCReference Include="src\Components\FMX.Material.ListView.pas"/>
         <DCCReference Include="src\Components\FMX.Material.Avatar.pas"/>
         <DCCReference Include="src\Components\FMX.Material.Badge.pas"/>
+        <DCCReference Include="src\Components\FMX.Material.Chip.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -42,6 +42,7 @@ contains
   FMX.Material.ZIndex.Editor in 'src\Resources\FMX.Material.ZIndex.Editor.pas',
   FMX.Material.ListView in 'src\Components\FMX.Material.ListView.pas',
   FMX.Material.Avatar in 'src\Components\FMX.Material.Avatar.pas',
-  FMX.Material.Badge in 'src\Components\FMX.Material.Badge.pas';
+  FMX.Material.Badge in 'src\Components\FMX.Material.Badge.pas',
+  FMX.Material.Chip in 'src\Components\FMX.Material.Chip.pas';
 
 end.

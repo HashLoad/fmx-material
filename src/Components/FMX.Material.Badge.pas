@@ -3,7 +3,7 @@ unit FMX.Material.Badge;
 interface
 
 uses
-  FMX.Material.Paper, FMX.Graphics, System.Classes;
+  FMX.Material.Paper, FMX.Graphics, System.Classes, FMX.Controls;
 
 type
   TBadgeVariant = (standard, dot);
