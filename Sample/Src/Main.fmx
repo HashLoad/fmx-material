@@ -99,13 +99,13 @@ object Form3: TForm3
     Elevation = 0
     Position.X = 80.000000000000000000
     Position.Y = 248.000000000000000000
-    Size.Width = 100.000000000000000000
+    Size.Width = 104.179687500000000000
     Size.Height = 28.000000000000000000
     Size.PlatformDefault = False
     Fill.Color = claCoral
-    Variant = outlined
-    Text = 'a'
+    Variant = vOutlined
+    Text = '123456789'
     MinHeight = 28.000000000000000000
-    MinWidth = 100.000000000000000000
+    MinWidth = 50.000000000000000000
   end
 end

@@ -39,6 +39,7 @@ type
     procedure RecalculeSize;
     procedure SetOutlinedSize(const Value: Integer);
     procedure SetDeleteIcon(const Value: TMaterialChipDeleteType);
+    procedure DoDrawDeleteButton;
   protected
     procedure Resize; override;
     property HitTest default True;
@@ -138,6 +139,22 @@ begin
   inherited;
 end;
 
+procedure TMaterialChip.DoDrawDeleteButton;
+var
+  LRect: TRectF;
+begin
+  inherited;
+  LRect := TRectF.Create(0, Self.Width - Self.Height, Self.Width - 3, Self.Height - 3);
+  LRect := TRectF.Create(0, 0, 1, 1).FitInto(LRect);
+
+  Canvas.BeginScene;
+  try
+    Canvas.FillEllipse(LRect, AbsoluteOpacity, FFill);
+  finally
+    Canvas.EndScene;
+  end;
+end;
+
 procedure TMaterialChip.FillChanged(Sender: TObject);
 begin
   Repaint;
@@ -156,7 +173,6 @@ var
   LOutlinedBrush: TStrokeBrush;
   LBorderRadious: Single;
 begin
-  LRect := TRectF.Create(0, 0, Self.Width, Self.Height);
   LRect := TRectF.Create(0, 0, Self.Width, Self.Height);
   LCorners := [TCorner.TopLeft, TCorner.TopRight, TCorner.BottomLeft, TCorner.BottomRight];
   LSides := [TSide.Top, TSide.Left, TSide.Bottom, TSide.Right];
@@ -181,6 +197,7 @@ begin
         Canvas.Fill.Color := FFill.Color;
       end;
   end;
+  DoDrawDeleteButton;
 
   Canvas.FillText(LRect, Text, False, AbsoluteOpacity, [], TTextAlign.Center);
 
@@ -234,6 +251,7 @@ begin
 
     if Height < LHeight then
       Height := LHeight;
+
   finally
     FInRecalcSize := False;
   end;
@@ -248,8 +266,17 @@ end;
 procedure TMaterialChip.SetDeleteIcon(const Value: TMaterialChipDeleteType);
 begin
   FDeleteIcon := Value;
-  RecalculeSize;
-  Repaint;
+  if FDeleteIcon <> Value then
+  begin
+
+    if FDeleteIcon <> TMaterialChipDeleteType.dtNone then
+    begin
+      Width := Width - Height;
+    end;
+
+    RecalculeSize;
+    Repaint;
+  end;
 end;
 
 procedure TMaterialChip.SetFill(const Value: TBrush);
