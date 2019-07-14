@@ -34,6 +34,8 @@ const
     (Value: 23; Name: 'Elevation 23dp'),
     (Value: 24; Name: 'Elevation 24dp'));
 
+  MAX_ELEVATION = 24;
+
 type
   PElevation = ^TElevation;
   TElevation = type Integer;
@@ -41,6 +43,10 @@ type
   TElevationMapEntry = record
     Value: TElevation;
     Name: string;
+  end;
+
+  TElevationHelper = record helper for TElevation
+    procedure AdjustValue;
   end;
 
 function ElevationToString(Value: TElevation): string;
@@ -83,6 +89,9 @@ begin
   Result := IntToIdent(Elevation, Ident, Elevations);
   if not Result then
   begin
+    if Elevation > MAX_ELEVATION then
+      Elevation := MAX_ELEVATION;
+
     Ident := 'Elevation ' + Elevation.ToString + 'dp';
     Result := True;
   end;
@@ -91,6 +100,14 @@ end;
 function ElevationToString(Value: TElevation): string;
 begin
   ElevationToIdent(Integer(Value), Result);
+end;
+
+{ TElevationHelper }
+
+procedure TElevationHelper.AdjustValue;
+begin
+  if Self > MAX_ELEVATION then
+    Self := MAX_ELEVATION;
 end;
 
 end.

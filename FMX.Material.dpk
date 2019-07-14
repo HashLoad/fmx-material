@@ -43,6 +43,9 @@ contains
   FMX.Material.ListView in 'src\Components\FMX.Material.ListView.pas',
   FMX.Material.Avatar in 'src\Components\FMX.Material.Avatar.pas',
   FMX.Material.Badge in 'src\Components\FMX.Material.Badge.pas',
-  FMX.Material.Chip in 'src\Components\FMX.Material.Chip.pas';
+  FMX.Material.Chip in 'src\Components\FMX.Material.Chip.pas',
+  FMX.Material.ChipList in 'src\Components\FMX.Material.ChipList.pas',
+  FMX.Material.Theme in 'src\Theme\FMX.Material.Theme.pas',
+  FMX.Material.Theme.Manager in 'src\Theme\FMX.Material.Theme.Manager.pas';
 
 end.
