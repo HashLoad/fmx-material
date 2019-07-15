@@ -3,16 +3,21 @@ unit FMX.Material.Chip;
 interface
 
 uses
-  FMX.Material.Paper, FMX.Graphics, System.Classes, System.UITypes, System.SysUtils;
+  FMX.Material.Paper, FMX.Graphics, System.Classes, System.UITypes, System.SysUtils, FMX.Objects;
 
 const
   DEFAULT_OUTLINE_SIZE = 2;
   TEXT_MARGING_HEIGHT = 10;
   TEXT_MARGING_WIDTH = 20;
+  DEFAULT_PATH_DELETE = 'M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 ' +
+    '13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z';
 
 type
+  TMaterialChip = class;
+
   TMaterialChipVariant = (vDefault, vOutlined);
   TMaterialChipDeleteType = (dtNone, dtDefault, dtCustom);
+  TDeleteChip = procedure(Sender: TMaterialChip) of object;
 
   TMaterialChip = class(TMaterialPaper)
   private
@@ -26,8 +31,9 @@ type
     FMinHeight: Single;
     FMinWidth: Single;
     FInRecalcSize: Boolean;
+    FDeletePath: TPath;
     FDeleteIcon: TMaterialChipDeleteType;
-    FOnDelete: TProc<TMaterialChip>;
+    FOnDelete: TDeleteChip;
     function GetFill: TBrush;
     procedure SetFill(const Value: TBrush);
     procedure SetVariant(const Value: TMaterialChipVariant);
@@ -39,12 +45,17 @@ type
     procedure RecalculeSize;
     procedure SetOutlinedSize(const Value: Integer);
     procedure SetDeleteIcon(const Value: TMaterialChipDeleteType);
-    procedure DoDrawDeleteButton;
+    function GetDeletePath: TPathData;
+    procedure SetDeletePath(const Value: TPathData);
+
+    procedure InternalDeleteClick(ASender: TObject);
+
   protected
     procedure Resize; override;
     property HitTest default True;
     property CanFocus default False;
     procedure Paint; override;
+    procedure DrawDeleteIcon;
     procedure FillChanged(Sender: TObject); virtual;
   public
     constructor Create(AOwner: TComponent); override;
@@ -61,7 +72,8 @@ type
 
     property MinHeight: Single read FMinHeight write SetMinHeight;
     property MinWidth: Single read FMinWidth write SetMinWidth;
-    property OnDelete: TProc<TMaterialChip> read FOnDelete write FOnDelete;
+    property OnDelete: TDeleteChip read FOnDelete write FOnDelete;
+    property DeletePath: TPathData read GetDeletePath write SetDeletePath;
 
     property Align;
     property Anchors;
@@ -108,7 +120,7 @@ type
 implementation
 
 uses
-  System.Types, FMX.Types, FMX.Controls;
+  System.Types, FMX.Types, FMX.Controls, FMX.Ani;
 
 { TMaterialChip }
 
@@ -126,6 +138,18 @@ begin
   FDeleteIcon := TMaterialChipDeleteType.dtNone;
   FInRecalcSize := False;
 
+  FDeletePath := TPath.Create(nil);
+
+  FDeletePath.SetSubComponent(True);
+  FDeletePath.Stored := False;
+
+  FDeletePath.Data.Data := DEFAULT_PATH_DELETE;
+  FDeletePath.Align := TAlignLayout.Right;
+  FDeletePath.Margins.Top := 4;
+  FDeletePath.Margins.Bottom := 4;
+  FDeletePath.Margins.Right := 5;
+  FDeletePath.OnClick := InternalDeleteClick;
+
   FFill := TBrush.Create(TBrushKind.Solid, $FFE0E0E0);
   FFill.OnChanged := FillChanged;
   FFont := TFont.Create;
@@ -136,22 +160,35 @@ end;
 destructor TMaterialChip.Destroy;
 begin
   FFill.DisposeOf;
+  FDeletePath.DisposeOf;
   inherited;
 end;
 
-procedure TMaterialChip.DoDrawDeleteButton;
-var
-  LRect: TRectF;
+procedure TMaterialChip.DrawDeleteIcon;
 begin
-  inherited;
-  LRect := TRectF.Create(0, Self.Width - Self.Height, Self.Width - 3, Self.Height - 3);
-  LRect := TRectF.Create(0, 0, 1, 1).FitInto(LRect);
+  case DeleteIcon of
+    dtNone: FDeletePath.Parent := nil;
+    dtDefault,
+    dtCustom:
+      begin
+        case FVariant of
+          vDefault:
+          begin
+            FDeletePath.Fill.Color := TAlphaColorRec.White;
+            FDeletePath.Opacity := 0.6;
+          end;
+          vOutlined:
+          begin
+            FDeletePath.Fill.Color := FFill.Color;
+            FDeletePath.Opacity := 1;
+          end;
+        end;
 
-  Canvas.BeginScene;
-  try
-    Canvas.FillEllipse(LRect, AbsoluteOpacity, FFill);
-  finally
-    Canvas.EndScene;
+        FDeletePath.Stroke.Kind := TBrushKind.None;
+        FDeletePath.Height := Height;
+        FDeletePath.Width := FDeletePath.Height;
+        FDeletePath.Parent := Self;
+      end;
   end;
 end;
 
@@ -160,9 +197,20 @@ begin
   Repaint;
 end;
 
+function TMaterialChip.GetDeletePath: TPathData;
+begin
+  Result := FDeletePath.Data;
+end;
+
 function TMaterialChip.GetFill: TBrush;
 begin
   Result := FFill;
+end;
+
+procedure TMaterialChip.InternalDeleteClick(ASender: TObject);
+begin
+  if Assigned(FOnDelete) then
+    FOnDelete(Self);
 end;
 
 procedure TMaterialChip.Paint;
@@ -173,6 +221,7 @@ var
   LOutlinedBrush: TStrokeBrush;
   LBorderRadious: Single;
 begin
+  LRect := TRectF.Create(0, 0, Self.Width, Self.Height);
   LRect := TRectF.Create(0, 0, Self.Width, Self.Height);
   LCorners := [TCorner.TopLeft, TCorner.TopRight, TCorner.BottomLeft, TCorner.BottomRight];
   LSides := [TSide.Top, TSide.Left, TSide.Bottom, TSide.Right];
@@ -197,7 +246,12 @@ begin
         Canvas.Fill.Color := FFill.Color;
       end;
   end;
-  DoDrawDeleteButton;
+
+  if DeleteIcon <> dtNone then
+    //To square button marge
+    LRect.Right := LRect.Right - Height;
+
+  DrawDeleteIcon;
 
   Canvas.FillText(LRect, Text, False, AbsoluteOpacity, [], TTextAlign.Center);
 
@@ -211,8 +265,10 @@ var
   LWidth: Single;
   LOldTextWidth: Single;
 begin
-  if FInRecalcSize then
+  if FInRecalcSize or not Assigned(Canvas) then
     Exit;
+
+  Canvas.Font.Assign(FFont);
 
   LHeight := 0;
   LWidth := 0;
@@ -251,7 +307,6 @@ begin
 
     if Height < LHeight then
       Height := LHeight;
-
   finally
     FInRecalcSize := False;
   end;
@@ -266,17 +321,14 @@ end;
 procedure TMaterialChip.SetDeleteIcon(const Value: TMaterialChipDeleteType);
 begin
   FDeleteIcon := Value;
-  if FDeleteIcon <> Value then
-  begin
+  RecalculeSize;
+  Repaint;
+end;
 
-    if FDeleteIcon <> TMaterialChipDeleteType.dtNone then
-    begin
-      Width := Width - Height;
-    end;
-
-    RecalculeSize;
-    Repaint;
-  end;
+procedure TMaterialChip.SetDeletePath(const Value: TPathData);
+begin
+  FDeletePath.Data.Assign(Value);
+  Repaint;
 end;
 
 procedure TMaterialChip.SetFill(const Value: TBrush);

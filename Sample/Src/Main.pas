@@ -21,10 +21,12 @@ type
     MaterialAvatar1: TMaterialAvatar;
     Edit2: TEdit;
     MaterialChip1: TMaterialChip;
+    Path1: TPath;
     procedure FloatAnimation1Process(Sender: TObject);
     procedure NumberBox1ChangeTracking(Sender: TObject);
     procedure CheckBox1Change(Sender: TObject);
     procedure Edit2Change(Sender: TObject);
+    procedure MaterialChip1Delete(Sender: TMaterialChip);
   private
     { Private declarations }
   public
@@ -54,6 +56,11 @@ end;
 procedure TForm3.FloatAnimation1Process(Sender: TObject);
 begin
   Edit1.Text := ElevationToString(MaterialCard1.Elevation);
+end;
+
+procedure TForm3.MaterialChip1Delete(Sender: TMaterialChip);
+begin
+  ShowMessage(Sender.Text);
 end;
 
 procedure TForm3.NumberBox1ChangeTracking(Sender: TObject);

@@ -163,10 +163,14 @@
             <Form>Form3</Form>
             <FormType>fmx</FormType>
         </DCCReference>
+        <DCCReference Include="..\src\Theme\FMX.Material.Theme.Manager.pas"/>
+        <DCCReference Include="..\src\Theme\FMX.Material.Theme.pas"/>
+        <DCCReference Include="..\src\Components\FMX.Material.AppBar.pas"/>
         <DCCReference Include="..\src\Components\FMX.Material.Avatar.pas"/>
         <DCCReference Include="..\src\Components\FMX.Material.Badge.pas"/>
         <DCCReference Include="..\src\Components\FMX.Material.Card.pas"/>
         <DCCReference Include="..\src\Components\FMX.Material.Chip.pas"/>
+        <DCCReference Include="..\src\Components\FMX.Material.ChipList.pas"/>
         <DCCReference Include="..\src\Components\FMX.Material.ListView.pas"/>
         <DCCReference Include="..\src\Components\FMX.Material.Paper.pas"/>
         <BuildConfiguration Include="Release">
