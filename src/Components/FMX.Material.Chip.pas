@@ -46,6 +46,7 @@ type
     procedure SetOutlinedSize(const Value: Integer);
     procedure SetDeleteIcon(const Value: TMaterialChipDeleteType);
     function GetDeletePath: TPathData;
+    function PathIsStored: Boolean;
     procedure SetDeletePath(const Value: TPathData);
 
     procedure InternalDeleteClick(ASender: TObject);
@@ -73,7 +74,7 @@ type
     property MinHeight: Single read FMinHeight write SetMinHeight;
     property MinWidth: Single read FMinWidth write SetMinWidth;
     property OnDelete: TDeleteChip read FOnDelete write FOnDelete;
-    property DeletePath: TPathData read GetDeletePath write SetDeletePath;
+    property DeletePath: TPathData read GetDeletePath write SetDeletePath stored PathIsStored;
 
     property Align;
     property Anchors;
@@ -257,6 +258,11 @@ begin
 
   Canvas.EndScene;
   inherited;
+end;
+
+function TMaterialChip.PathIsStored: Boolean;
+begin
+  Result := FDeletePath.Data.Data <> DEFAULT_PATH_DELETE;
 end;
 
 procedure TMaterialChip.RecalculeSize;
