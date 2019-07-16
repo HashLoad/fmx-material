@@ -16,12 +16,14 @@ type
     FChipBase: TMaterialChip;
     FOnValidate: TMaterialChipListValidate;
     FChips: TList<TMaterialChip>;
+    FReadOnly: Boolean;
     procedure DoAddChip(const AText: string);
 
     procedure InternalEditKeyUp(Sender: TObject; var Key: Word; var KeyChar: WideChar; Shift: TShiftState);
     procedure InternalEditTyping(Sender: TObject);
     procedure SetChipBase(const Value: TMaterialChip);
     procedure SetChips(const Value: TList<TMaterialChip>);
+    procedure SetReadOnly(const Value: Boolean);
   protected
     procedure Click; override;
     procedure Loaded; override;
@@ -38,6 +40,7 @@ type
   published
     property ChipBase: TMaterialChip read FChipBase write SetChipBase;
     property OnValidate: TMaterialChipListValidate read FOnValidate write FOnValidate;
+    property ReadOnly: Boolean read FReadOnly write SetReadOnly default False;
   end;
 
 implementation
@@ -80,10 +83,6 @@ begin
   FScroll.SetSubComponent(True);
   FScroll.Align := TAlignLayout.Contents;
   FScroll.Parent := Self;
-  FScroll.Margins.Top := 10;
-  FScroll.Margins.Left := 5;
-  FScroll.Margins.Right := 5;
-  FScroll.Margins.Bottom := 10;
   FScroll.HitTest := False;
 
   FLayout := TMaterialChipListFlowLayout.Create(Self);
@@ -92,6 +91,10 @@ begin
   FLayout.Align := TAlignLayout.Top;
   FLayout.Parent := FScroll;
   FLayout.HitTest := False;
+  FLayout.Padding.Top := 10;
+  FLayout.Padding.Left := 5;
+  FLayout.Padding.Right := 5;
+  FLayout.Padding.Bottom := 10;
 
   FChipBase := TMaterialChip.Create(Self);
   FChipBase.Name := 'TMaterialChipListBase';
@@ -194,6 +197,15 @@ begin
   FChips := Value;
 end;
 
+procedure TMaterialChipList.SetReadOnly(const Value: Boolean);
+begin
+  FReadOnly := Value;
+  if Value then
+    FChipBase.Parent := nil
+  else
+    FChipBase.Parent := FLayout;
+end;
+
 { TMaterialChipListFlowLayout }
 
 procedure TMaterialChipListFlowLayout.DoRealign;
@@ -201,6 +213,10 @@ var
   LLastControl: TControl;
 begin
   inherited;
+
+  if ControlsCount = 0 then
+    Exit;
+
   LLastControl := Controls[ControlsCount - 1];
   Height := LLastControl.Position.Y + LLastControl.Height + DEFAULT_END_MARGING
 end;

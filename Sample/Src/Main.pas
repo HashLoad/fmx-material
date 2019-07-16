@@ -13,7 +13,6 @@ uses
 
 type
   TForm3 = class(TForm)
-    MaterialChipList1: TMaterialChipList;
     Button1: TButton;
     Edit1: TEdit;
     procedure MaterialChipList1TMaterialChipListBaseDelete(Sender: TMaterialChip);
