@@ -61,6 +61,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    procedure Assign(Source: TPersistent); override;
   published
     property Fill: TBrush read GetFill write SetFill;
     property Font: TFont read FFont write SetFont;
@@ -124,6 +125,27 @@ uses
   System.Types, FMX.Types, FMX.Controls, FMX.Ani;
 
 { TMaterialChip }
+
+procedure TMaterialChip.Assign(Source: TPersistent);
+var
+  LSource: TMaterialChip;
+begin
+  LSource := Source as TMaterialChip;
+
+  Self.Elevation := LSource.Elevation;
+  Self.Margins := LSource.Margins;
+  Self.Fill := LSource.Fill;
+  Self.Font := LSource.Font;
+  Self.FontColor := LSource.FontColor;
+  Self.Variant := LSource.Variant;
+  Self.Text := LSource.Text;
+  Self.DeleteIcon := LSource.DeleteIcon;
+  Self.MinHeight := LSource.MinHeight;
+  Self.MinWidth := LSource.MinWidth;
+  Self.DeletePath := LSource.DeletePath;
+  Self.OutlinedSize := LSource.OutlinedSize;
+  Self.OnDelete := LSource.OnDelete;
+end;
 
 constructor TMaterialChip.Create(AOwner: TComponent);
 begin

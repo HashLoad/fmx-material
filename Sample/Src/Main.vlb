@@ -2,13 +2,10 @@
 Coordinates=10,19,82,51
 ExplicitSubNodes=Elevation
 
-[NumberBox1]
-Coordinates=190,10,78,87
-ExplicitSubNodes=Position.Y;Position.X
-
 []
-Coordinates=288,89,82,33
+Coordinates=190,10,78,87
 Visible=True
+ExplicitSubNodes=Position.Y;Position.X
 
 [MaterialPaper1]
 Coordinates=330,19,87,51
@@ -17,11 +14,4 @@ ExplicitSubNodes=Elevation
 
 [Circle1]
 Coordinates=300,190,48,33
-
-[FloatAnimation1]
-Coordinates=12,89,95,33
-
-[Edit1]
-Coordinates=111,1,52,87
-ExplicitSubNodes=Position.X;Position.Y
 

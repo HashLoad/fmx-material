@@ -6,27 +6,19 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Material.Paper, FMX.Objects, FMX.Effects,
   FMX.Controls.Presentation, FMX.Edit, FMX.EditBox, FMX.NumberBox, FMX.Material.Card, Data.Bind.EngExt,
-  Fmx.Bind.DBEngExt, System.Rtti, System.Bindings.Outputs, Fmx.Bind.Editors, Data.Bind.Components, FMX.Ani, FMX.StdCtrls,
-  FMX.Material.Avatar, FMX.Material.Badge, FMX.Material.Chip;
+  FMX.Bind.DBEngExt, System.Rtti, System.Bindings.Outputs, FMX.Bind.Editors, Data.Bind.Components, FMX.Ani,
+  FMX.StdCtrls,
+  FMX.Material.Avatar, FMX.Material.Badge, FMX.Material.Chip, FMX.Layouts, FMX.ScrollBox, FMX.Material.ChipList,
+  System.Generics.Collections;
 
 type
   TForm3 = class(TForm)
-    NumberBox1: TNumberBox;
-    MaterialCard1: TMaterialCard;
-    MaterialPaper1: TMaterialPaper;
-    Circle1: TCircle;
-    FloatAnimation1: TFloatAnimation;
+    MaterialChipList1: TMaterialChipList;
+    Button1: TButton;
     Edit1: TEdit;
-    CheckBox1: TCheckBox;
-    MaterialAvatar1: TMaterialAvatar;
-    Edit2: TEdit;
-    MaterialChip1: TMaterialChip;
-    Path1: TPath;
-    procedure FloatAnimation1Process(Sender: TObject);
-    procedure NumberBox1ChangeTracking(Sender: TObject);
-    procedure CheckBox1Change(Sender: TObject);
-    procedure Edit2Change(Sender: TObject);
-    procedure MaterialChip1Delete(Sender: TMaterialChip);
+    procedure MaterialChipList1TMaterialChipListBaseDelete(Sender: TMaterialChip);
+    procedure Button1Click(Sender: TObject);
+    function MaterialChipList1Validate(AValue: string): Boolean;
   private
     { Private declarations }
   public
@@ -42,31 +34,25 @@ uses
   FMX.Material.ZIndex;
 
 {$R *.fmx}
+{ TTestFlowLayout }
 
-procedure TForm3.CheckBox1Change(Sender: TObject);
+procedure TForm3.Button1Click(Sender: TObject);
+var
+  Lindex: Integer;
 begin
-FloatAnimation1.Enabled := CheckBox1.IsChecked;
+  for Lindex := 0 to 1000 do
+    MaterialChipList1.Add(Lindex.ToString);
 end;
 
-procedure TForm3.Edit2Change(Sender: TObject);
+procedure TForm3.MaterialChipList1TMaterialChipListBaseDelete(Sender: TMaterialChip);
 begin
-  MaterialChip1.Text := Edit2.Text;
+  Sender.DisposeOf;
 end;
 
-procedure TForm3.FloatAnimation1Process(Sender: TObject);
+function TForm3.MaterialChipList1Validate(AValue: string): Boolean;
 begin
-  Edit1.Text := ElevationToString(MaterialCard1.Elevation);
-end;
+  Result := not AValue.IsEmpty;
 
-procedure TForm3.MaterialChip1Delete(Sender: TMaterialChip);
-begin
-  ShowMessage(Sender.Text);
-end;
-
-procedure TForm3.NumberBox1ChangeTracking(Sender: TObject);
-begin
-  MaterialCard1.Elevation := TElevation(NumberBox1.Text.ToInteger);
-  MaterialPaper1.Elevation := TElevation(NumberBox1.Text.ToInteger);
 end;
 
 end.
