@@ -60,8 +60,17 @@ type
 
 procedure TMaterialChipList.Add(AChip: TMaterialChip);
 begin
-  FChips.Add(AChip);
-  AChip.Parent := FScroll;
+  FLayout.BeginUpdate;
+  try
+    FChipBase.Parent := nil;
+    AChip.Parent := FScroll;
+    FChips.Add(AChip);
+  finally
+    if not ReadOnly then
+      FChipBase.Parent := FLayout;
+    FLayout.EndUpdate;
+  end;
+  FScroll.ScrollBy(0, -FLayout.Height);
 end;
 
 procedure TMaterialChipList.Add(AChip: string);
@@ -147,7 +156,8 @@ begin
     LChip.Text := AText;
     FChips.Add(LChip);
   finally
-    FChipBase.Parent := FLayout;
+    if not ReadOnly then
+      FChipBase.Parent := FLayout;
     FLayout.EndUpdate;
   end;
   FScroll.ScrollBy(0, -FLayout.Height);
