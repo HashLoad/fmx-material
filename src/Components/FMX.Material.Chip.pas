@@ -183,6 +183,7 @@ end;
 destructor TMaterialChip.Destroy;
 begin
   FFill.DisposeOf;
+  FFont.DisposeOf;
   FDeletePath.DisposeOf;
   inherited;
 end;
