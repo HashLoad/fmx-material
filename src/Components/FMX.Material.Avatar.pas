@@ -3,7 +3,7 @@ unit FMX.Material.Avatar;
 interface
 
 uses
-  FMX.Material.Paper, System.UITypes, FMX.Graphics, System.Classes, FMX.ImgList;
+  FMX.Material.Paper, System.UITypes, FMX.Graphics, FMX.ImgList, System.Classes;
 
 type
   TMaterialAvatar = class(TMaterialPaper)
@@ -113,19 +113,27 @@ const
   COLORS: array[0..9] of integer  = ($FF4A148C, $FFF44336, $FF303F9F, $FF1565C0, $FF388E3C, $FF827717,
     $FFFFA000, $FF4E342E, $FF616161, $FF37474F);
 var
- LHex: string;
+ LSum: Integer;
  LInitials: string;
+ LIndex: Integer;
 begin
   LInitials := GetInitials;
+
   if LInitials.IsEmpty then
   begin
     FFill.Color := COLORS[0];
     Exit;
   end;
 
-  SetLength(LHex, Length(LInitials) * 4);
-  BinToHex(FText[1], PWideChar(LHex), Length(LInitials) * SizeOf(Char));
-  FFill.Color := COLORS[('$' + LHex).ToInt64 mod 9];
+  LSum := 0;
+  {$ZEROBASEDSTRINGS OFF}
+  for LIndex := 1 to Length(LInitials) do
+  begin
+    LSum := LSum + Ord(LInitials[LIndex]);
+  end;
+  {$ZEROBASEDSTRINGS ON}
+
+  FFill.Color := COLORS[LSum mod 9];
 end;
 
 function TMaterialAvatar.GetFill: TBrush;
