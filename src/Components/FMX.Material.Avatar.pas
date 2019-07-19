@@ -19,6 +19,7 @@ type
     procedure SetWidth(const Value: Single); override;
     procedure SetHeight(const Value: Single); override;
     function GetInitials: string;
+    procedure GenerateNameColor;
   public
     constructor Create(AOwner: TComponent); override;
     property Elevation;
@@ -107,6 +108,26 @@ begin
   Repaint;
 end;
 
+procedure TMaterialAvatar.GenerateNameColor;
+const
+  COLORS: array[0..9] of integer  = ($FF4A148C, $FFF44336, $FF303F9F, $FF1565C0, $FF388E3C, $FF827717,
+    $FFFFA000, $FF4E342E, $FF616161, $FF37474F);
+var
+ LHex: string;
+ LInitials: string;
+begin
+  LInitials := GetInitials;
+  if LInitials.IsEmpty then
+  begin
+    FFill.Color := COLORS[0];
+    Exit;
+  end;
+
+  SetLength(LHex, Length(LInitials) * 4);
+  BinToHex(FText[1], PWideChar(LHex), Length(LInitials) * SizeOf(Char));
+  FFill.Color := COLORS[('$' + LHex).ToInt64 mod 9];
+end;
+
 function TMaterialAvatar.GetFill: TBrush;
 begin
   Result := FFill;
@@ -166,6 +187,7 @@ end;
 procedure TMaterialAvatar.SetText(const Value: String);
 begin
   FText := Value;
+  GenerateNameColor;
   Repaint;
 end;
 

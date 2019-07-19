@@ -8,22 +8,28 @@ object Form3: TForm3
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   DesignerMasterStyle = 0
-  object Button1: TButton
-    Position.X = 808.000000000000000000
-    Position.Y = 480.000000000000000000
-    TabOrder = 0
-    Text = 'Button1'
-    OnClick = Button1Click
-  end
   object Edit1: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
-    TabOrder = 1
+    TabOrder = 0
     Text = 'aasdasd'
     TextSettings.Font.Size = 16.000000000000000000
     TextSettings.Font.StyleExt = {00070000000000000004000000}
     TextSettings.FontColor = claDodgerblue
-    Position.X = 16.000000000000000000
-    Position.Y = 176.000000000000000000
+    Position.X = 120.000000000000000000
+    Position.Y = 96.000000000000000000
+    Size.Width = 305.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
     StyledSettings = [Family]
+    OnChange = Edit1Change
+  end
+  object MaterialAvatar1: TMaterialAvatar
+    Elevation = 0
+    Position.X = 376.000000000000000000
+    Position.Y = 160.000000000000000000
+    Size.Width = 248.000000000000000000
+    Size.Height = 176.000000000000000000
+    Size.PlatformDefault = False
+    Fill.Color = xFFB2A3D7
   end
 end

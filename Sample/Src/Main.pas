@@ -13,11 +13,9 @@ uses
 
 type
   TForm3 = class(TForm)
-    Button1: TButton;
     Edit1: TEdit;
-    procedure MaterialChipList1TMaterialChipListBaseDelete(Sender: TMaterialChip);
-    procedure Button1Click(Sender: TObject);
-    function MaterialChipList1Validate(AValue: string): Boolean;
+    MaterialAvatar1: TMaterialAvatar;
+    procedure Edit1Change(Sender: TObject);
   private
     { Private declarations }
   public
@@ -35,23 +33,9 @@ uses
 {$R *.fmx}
 { TTestFlowLayout }
 
-procedure TForm3.Button1Click(Sender: TObject);
-var
-  Lindex: Integer;
+procedure TForm3.Edit1Change(Sender: TObject);
 begin
-  for Lindex := 0 to 1000 do
-    MaterialChipList1.Add(Lindex.ToString);
-end;
-
-procedure TForm3.MaterialChipList1TMaterialChipListBaseDelete(Sender: TMaterialChip);
-begin
-  Sender.DisposeOf;
-end;
-
-function TForm3.MaterialChipList1Validate(AValue: string): Boolean;
-begin
-  Result := not AValue.IsEmpty;
-
+ MaterialAvatar1.Text := Edit1.Text;
 end;
 
 end.
