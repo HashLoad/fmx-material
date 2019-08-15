@@ -21,12 +21,17 @@ type
 
     procedure InternalEditKeyUp(Sender: TObject; var Key: Word; var KeyChar: WideChar; Shift: TShiftState);
     procedure InternalEditTyping(Sender: TObject);
+
+
     procedure SetChipBase(const Value: TMaterialChip);
     procedure SetChips(const Value: TList<TMaterialChip>);
     procedure SetReadOnly(const Value: Boolean);
   protected
     procedure Click; override;
     procedure Loaded; override;
+    procedure Paint; override;
+    procedure DoEnter; override;
+
 
   public
     constructor Create(AOwner: TComponent); override;
@@ -35,12 +40,19 @@ type
     procedure Add(AChip: string); overload;
     property Chips: TList<TMaterialChip> read FChips write SetChips;
 
+
     destructor Destroy; override;
+
 
   published
     property ChipBase: TMaterialChip read FChipBase write SetChipBase;
     property OnValidate: TMaterialChipListValidate read FOnValidate write FOnValidate;
     property ReadOnly: Boolean read FReadOnly write SetReadOnly default False;
+  published
+    property HitTest;
+    property OnCanFocus;
+    property TabStop;
+    property CanFocus;
   end;
 
 implementation
@@ -62,12 +74,15 @@ procedure TMaterialChipList.Add(AChip: TMaterialChip);
 begin
   FLayout.BeginUpdate;
   try
-    FChipBase.Parent := nil;
+    FEdit.Parent := nil;
     AChip.Parent := FScroll;
     FChips.Add(AChip);
   finally
     if not ReadOnly then
-      FChipBase.Parent := FLayout;
+    begin
+      FEdit.Parent := FLayout;
+      FEdit.Width := FLayout.Width - FEdit.Position.X;
+    end;
     FLayout.EndUpdate;
   end;
   FScroll.ScrollBy(0, -FLayout.Height);
@@ -87,6 +102,9 @@ end;
 constructor TMaterialChipList.Create(AOwner: TComponent);
 begin
   inherited;
+  CanFocus := True;
+  TabStop := True;
+
   FScroll := TVertScrollBox.Create(Self);
   FScroll.Stored := False;
   FScroll.SetSubComponent(True);
@@ -95,10 +113,10 @@ begin
   FScroll.HitTest := False;
 
   FLayout := TMaterialChipListFlowLayout.Create(Self);
+  FLayout.Parent := FScroll;
   FLayout.Stored := False;
   FLayout.SetSubComponent(True);
   FLayout.Align := TAlignLayout.Top;
-  FLayout.Parent := FScroll;
   FLayout.HitTest := False;
   FLayout.Padding.Top := 10;
   FLayout.Padding.Left := 5;
@@ -113,19 +131,19 @@ begin
   FEdit.Stored := False;
   FEdit.SetSubComponent(True);
 
-  FChipBase.Parent := FLayout;
-
   if csDesigning in ComponentState then
   begin
+    FChipBase.Parent := FLayout;
     FChipBase.Text := 'Test chip';
   end
   else
   begin
-    FEdit.Parent := FChipBase;
+    FEdit.Parent := FLayout;
     FEdit.Align := TAlignLayout.Client;
     FEdit.Font.Assign(FChipBase.Font);
     FEdit.StylesData['background.Opacity'] := 0;
-    FEdit.Opacity := 0;
+    FEdit.Parent := FLayout;
+    FEdit.Width := FLayout.Width - FEdit.Position.X;
   end;
 
   FEdit.OnKeyUp := InternalEditKeyUp;
@@ -149,18 +167,27 @@ begin
 
   FLayout.BeginUpdate;
   try
-    FChipBase.Parent := nil;
+    FEdit.Parent := nil;
     LChip := TMaterialChip.Create(Self);
     LChip.Parent := FLayout;
     LChip.Assign(FChipBase);
     LChip.Text := AText;
+    LChip.HitTest := Self.HitTest;
     FChips.Add(LChip);
   finally
     if not ReadOnly then
-      FChipBase.Parent := FLayout;
+    begin
+      FEdit.Width := 20;
+      FEdit.Parent := FLayout;
+    end;
     FLayout.EndUpdate;
   end;
   FScroll.ScrollBy(0, -FLayout.Height);
+end;
+
+procedure TMaterialChipList.DoEnter;
+begin
+  FEdit.SetFocus;
 end;
 
 procedure TMaterialChipList.InternalEditKeyUp(Sender: TObject; var Key: Word; var KeyChar: WideChar;
@@ -191,6 +218,12 @@ begin
   FChipBase.Text := '';
 end;
 
+procedure TMaterialChipList.Paint;
+begin
+  inherited;
+  FEdit.Width := FLayout.Width - FEdit.Position.X - TMaterialChipListFlowLayout.DEFAULT_END_MARGING;
+end;
+
 procedure TMaterialChipList.Remove(AChip: TMaterialChip);
 begin
   FChips.Remove(AChip);
@@ -211,9 +244,9 @@ procedure TMaterialChipList.SetReadOnly(const Value: Boolean);
 begin
   FReadOnly := Value;
   if Value then
-    FChipBase.Parent := nil
+    FEdit.Parent := nil
   else
-    FChipBase.Parent := FLayout;
+    FEdit.Parent := FLayout;
 end;
 
 { TMaterialChipListFlowLayout }

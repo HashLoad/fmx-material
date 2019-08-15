@@ -53,7 +53,7 @@ type
 
   protected
     procedure Resize; override;
-    property HitTest default True;
+    procedure HitTestChanged; override;
     property CanFocus default False;
     procedure Paint; override;
     procedure DrawDeleteIcon;
@@ -62,6 +62,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Assign(Source: TPersistent); override;
+
   published
     property Fill: TBrush read GetFill write SetFill;
     property Font: TFont read FFont write SetFont;
@@ -77,6 +78,7 @@ type
     property OnDelete: TDeleteChip read FOnDelete write FOnDelete;
     property DeletePath: TPathData read GetDeletePath write SetDeletePath stored PathIsStored;
 
+    property HitTest default True;
     property Align;
     property Anchors;
     property ClipParent;
@@ -231,10 +233,19 @@ begin
   Result := FFill;
 end;
 
+procedure TMaterialChip.HitTestChanged;
+begin
+  inherited;
+  FDeletePath.HitTest := HitTest;
+end;
+
 procedure TMaterialChip.InternalDeleteClick(ASender: TObject);
 begin
   if Assigned(FOnDelete) then
     FOnDelete(Self);
+
+  Self.Parent := nil;
+  Self.DisposeOf;
 end;
 
 procedure TMaterialChip.Paint;
